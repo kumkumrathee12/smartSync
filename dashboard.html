@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSync – Logistics Dashboard</title>
+  <meta name="description" content="SmartSync dashboard – manage shipments, track deliveries, book warehouses, and plan routes from one central hub." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>" />
+</head>
+<body>
+  <!-- Animated background grid -->
+  <div class="bg-grid"></div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container"></div>
+
+  <!-- Sidebar Overlay (mobile) -->
+  <div id="sidebar-overlay"></div>
+
+  <div class="app-layout">
+    <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="sidebar-logo">
+        <div class="logo-icon">🚚</div>
+        <span class="logo-text">SmartSync</span>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Overview</div>
+        <a class="nav-link" data-section="dashboard" href="#" id="nav-dashboard" role="menuitem">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Operations</div>
+        <a class="nav-link" data-section="shipments" href="#" role="menuitem">
+          <span class="nav-icon">📦</span> Shipments
+          <span class="nav-badge" id="badge-shipments">0</span>
+        </a>
+        <a class="nav-link" data-section="tracking" href="#" role="menuitem">
+          <span class="nav-icon">🔍</span> Live Tracking
+        </a>
+        <a class="nav-link" data-section="route" href="#" role="menuitem">
+          <span class="nav-icon">🗺️</span> Route Planning
+        </a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-section-label">Logistics</div>
+        <a class="nav-link" data-section="warehouse" href="#" role="menuitem">
+          <span class="nav-icon">🏭</span> Warehouse
+        </a>
+        <a class="nav-link" data-section="chat" href="#" role="menuitem">
+          <span class="nav-icon">💬</span> Chat Support
+        </a>
+      </div>
+
+      <!-- Sidebar User -->
+      <div class="sidebar-user">
+        <div class="sidebar-user-card">
+          <div class="user-avatar" id="user-avatar-sidebar">U</div>
+          <div class="user-meta">
+            <span class="user-name">Loading...</span>
+            <span class="user-email">loading...</span>
+          </div>
+          <button id="logout-btn" title="Sign out">🚪</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══════════════════════ MAIN ══════════════════════════ -->
+    <div class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <button id="menu-toggle" aria-label="Toggle menu">☰</button>
+        <div class="topbar-title">
+          <span id="topbar-section-name">Dashboard</span>
+        </div>
+        <div class="topbar-search">
+          <span>🔍</span>
+          <input type="text" id="topbar-search-input" placeholder="Search shipments..." aria-label="Search" />
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notif-btn" title="Notifications" aria-label="Notifications">🔔</button>
+          <button class="icon-btn" title="Settings" aria-label="Settings">⚙️</button>
+        </div>
+      </header>
+
+      <main class="content-area">
+
+        <!-- ══════ SECTION: DASHBOARD ══════ -->
+        <section id="section-dashboard" class="page-section" aria-label="Dashboard overview">
+          <div class="section-header">
+            <div>
+              <h2 id="greeting">Good morning!</h2>
+              <p>Here's what's happening with your logistics today.</p>
+            </div>
+            <button class="btn-action btn-primary-action" onclick="document.querySelector('[data-section=shipments]').click()">
+              + New Shipment
+            </button>
+          </div>
+
+          <!-- Stat Cards -->
+          <div class="stats-grid">
+            <div class="stat-card blue">
+              <div class="stat-header">
+                <div class="stat-icon">📦</div>
+                <span class="stat-change">+12%</span>
+              </div>
+              <div class="stat-value" id="stat-total">0</div>
+              <div class="stat-label">Total Shipments</div>
+            </div>
+            <div class="stat-card cyan">
+              <div class="stat-header">
+                <div class="stat-icon">🚚</div>
+                <span class="stat-change">+5%</span>
+              </div>
+              <div class="stat-value" id="stat-active">0</div>
+              <div class="stat-label">Active Deliveries</div>
+            </div>
+            <div class="stat-card green">
+              <div class="stat-header">
+                <div class="stat-icon">✅</div>
+                <span class="stat-change">+8%</span>
+              </div>
+              <div class="stat-value" id="stat-completed">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-card amber">
+              <div class="stat-header">
+                <div class="stat-icon">🏭</div>
+                <span class="stat-change down">+2</span>
+              </div>
+              <div class="stat-value" id="stat-pending">0</div>
+              <div class="stat-label">Warehouse Bookings</div>
+            </div>
+          </div>
+
+          <!-- Dashboard Grid -->
+          <div class="dashboard-grid">
+            <!-- Recent Shipments -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Recent Shipments</h3>
+                <span class="card-action" onclick="document.querySelector('[data-section=shipments]').click()">View all →</span>
+              </div>
+              <div id="recent-shipments">
+                <div class="empty-state small"><p>No recent activity</p></div>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Delivery Overview</h3>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div class="delivery-stat-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);">📋 Order Placed</span>
+                  <span id="count-order-placed" style="font-weight:700;color:var(--primary-light);">0</span>
+                </div>
+                <div class="delivery-stat-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);">📦 Picked Up</span>
+                  <span id="count-picked-up" style="font-weight:700;color:var(--warning);">0</span>
+                </div>
+                <div class="delivery-stat-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);">🚚 In Transit</span>
+                  <span id="count-in-transit" style="font-weight:700;color:var(--accent);">0</span>
+                </div>
+                <div class="delivery-stat-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);">🛵 Out for Delivery</span>
+                  <span id="count-out-for-delivery" style="font-weight:700;color:var(--info);">0</span>
+                </div>
+                <div class="delivery-stat-row" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+                  <span style="display:flex;align-items:center;gap:8px;font-size:0.875rem;color:var(--text-secondary);">✅ Delivered</span>
+                  <span id="count-delivered" style="font-weight:700;color:var(--success);">0</span>
+                </div>
+              </div>
+
+              <!-- Status Bar -->
+              <div style="margin-top:20px;">
+                <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">
+                  <span>Delivery Success Rate</span>
+                  <span id="success-rate-text">0%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-elevated);border-radius:99px;overflow:hidden;">
+                  <div id="success-rate-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--primary),var(--success));border-radius:99px;transition:width 1s ease;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ SECTION: SHIPMENTS ══════ -->
+        <section id="section-shipments" class="page-section" aria-label="Shipment management">
+          <div class="section-header">
+            <div>
+              <h2>Shipment Management</h2>
+              <p>Create and manage all your shipments in one place.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;" id="shipment-layout">
+            <!-- Create Form -->
+            <div class="card">
+              <div class="card-header">
+                <h3>📋 Create Shipment</h3>
+              </div>
+              <form id="shipment-form" novalidate>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label for="customer-name">Customer Name</label>
+                    <input type="text" id="customer-name" placeholder="e.g. Acme Corp" required />
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label for="pickup-location">Pickup Location</label>
+                    <input type="text" id="pickup-location" placeholder="e.g. Mumbai, Maharashtra" required />
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label for="delivery-location">Delivery Location</label>
+                    <input type="text" id="delivery-location" placeholder="e.g. Delhi, DL" required />
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label for="package-details">Package Details</label>
+                    <input type="text" id="package-details" placeholder="e.g. Electronics – 5kg" required />
+                  </div>
+                  <div class="form-group" style="margin-bottom:0;">
+                    <label for="delivery-date">Expected Delivery Date</label>
+                    <input type="date" id="delivery-date" required />
+                  </div>
+                  <button type="submit" class="btn-action btn-primary-action w-full" id="create-shipment-btn" style="margin-top:4px;justify-content:center;">
+                    <i style="font-style:normal;">🚀</i> Create Shipment
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Shipments List -->
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="font-size:1rem;font-weight:700;color:var(--text-primary);">All Shipments</h3>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" id="shipment-search" placeholder="🔍 Filter shipments..." style="width:200px;padding:8px 12px;font-size:0.825rem;" />
+                </div>
+              </div>
+              <div class="shipments-grid" id="shipments-list">
+                <div class="empty-state">
+                  <div class="empty-icon">📦</div>
+                  <h3>No shipments yet</h3>
+                  <p>Create your first shipment to get started.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ SECTION: TRACKING ══════ -->
+        <section id="section-tracking" class="page-section" aria-label="Live tracking">
+          <div class="section-header">
+            <div>
+              <h2>Live Tracking</h2>
+              <p>Monitor your shipments through each delivery stage.</p>
+            </div>
+          </div>
+
+          <!-- Tracking search -->
+          <div class="card" style="margin-bottom:24px;">
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="tracking-search-input" placeholder="Enter Tracking ID (e.g. SSABC001)..." style="flex:1;min-width:200px;" />
+              <button class="btn-action btn-primary-action" id="tracking-search-btn">🔍 Track Shipment</button>
+            </div>
+          </div>
+
+          <!-- All shipments for tracking -->
+          <div class="shipments-grid" id="tracking-shipments-list">
+            <div class="empty-state">
+              <div class="empty-icon">🔍</div>
+              <h3>No shipments to track</h3>
+              <p>Create a shipment first to track it here.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ SECTION: ROUTE PLANNING ══════ -->
+        <section id="section-route" class="page-section" aria-label="Route planning">
+          <div class="section-header">
+            <div>
+              <h2>Route Planning</h2>
+              <p>Plan optimal delivery routes and estimate distances.</p>
+            </div>
+          </div>
+
+          <div class="route-layout">
+            <!-- Controls -->
+            <div class="card" style="height:fit-content;">
+              <div class="card-header"><h3>🗺️ Plan a Route</h3></div>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label for="route-pickup">Pickup Location</label>
+                  <input type="text" id="route-pickup" placeholder="e.g. Mumbai, India" />
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label for="route-delivery">Delivery Location</label>
+                  <input type="text" id="route-delivery" placeholder="e.g. Delhi, India" />
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label for="vehicle-type">Vehicle Type</label>
+                  <select id="vehicle-type">
+                    <option value="bike">🛵 Delivery Bike</option>
+                    <option value="van">🚐 Cargo Van</option>
+                    <option value="truck" selected>🚚 Medium Truck</option>
+                    <option value="heavy">🏗️ Heavy Truck</option>
+                  </select>
+                </div>
+                <button class="btn-action btn-primary-action w-full" id="plan-route-btn" style="justify-content:center;">
+                  📍 Plan Route
+                </button>
+              </div>
+              <div id="route-info" style="margin-top:0;"></div>
+            </div>
+
+            <!-- Map -->
+            <div class="route-map-container" id="route-map-container">
+              <div class="map-placeholder" id="map-placeholder">
+                <div class="map-icon">🗺️</div>
+                <p style="font-size:0.9rem;">Enter locations above to view the route</p>
+                <p style="font-size:0.78rem;color:var(--text-muted);">Powered by Google Maps</p>
+              </div>
+              <iframe id="route-map-frame" src="" style="display:none;" title="Route Map" allowfullscreen></iframe>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ SECTION: WAREHOUSE ══════ -->
+        <section id="section-warehouse" class="page-section" aria-label="Warehouse booking">
+          <div class="section-header">
+            <div>
+              <h2>Warehouse Booking</h2>
+              <p>Reserve warehouse slots for your shipments.</p>
+            </div>
+          </div>
+
+          <div class="booking-layout">
+            <!-- Calendar -->
+            <div class="card">
+              <div class="card-header"><h3>📅 Select Date</h3></div>
+              <div class="form-group" style="margin-bottom:16px;">
+                <label for="warehouse-select">Select Warehouse</label>
+                <select id="warehouse-select">
+                  <option value="Warehouse A – North Hub">🏭 Warehouse A – North Hub</option>
+                  <option value="Warehouse B – South Hub">🏭 Warehouse B – South Hub</option>
+                  <option value="Warehouse C – East Hub">🏭 Warehouse C – East Hub</option>
+                  <option value="Warehouse D – West Hub">🏭 Warehouse D – West Hub</option>
+                </select>
+              </div>
+              <div id="booking-calendar"></div>
+              <div id="selected-date-display" style="margin:16px 0 12px;font-size:0.875rem;font-weight:600;color:var(--primary-light);">
+                Select a date to see available slots
+              </div>
+              <div class="slots-grid" id="time-slots">
+                <p style="grid-column:1/-1;font-size:0.825rem;color:var(--text-muted);">Pick a date to load time slots.</p>
+              </div>
+              <!-- Legend -->
+              <div style="display:flex;gap:16px;margin-top:12px;font-size:0.75rem;color:var(--text-muted);">
+                <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:rgba(16,185,129,0.2);display:inline-block;"></span>Available</span>
+                <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--bg-elevated);display:inline-block;"></span>Booked</span>
+                <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:rgba(99,102,241,0.4);display:inline-block;"></span>Today</span>
+              </div>
+            </div>
+
+            <!-- My Bookings -->
+            <div class="card">
+              <div class="card-header"><h3>📋 My Bookings</h3></div>
+              <div id="bookings-list">
+                <div class="empty-state small"><p>No bookings yet.</p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════ SECTION: CHAT ══════ -->
+        <section id="section-chat" class="page-section" aria-label="Chat support">
+          <div class="section-header">
+            <div>
+              <h2>Chat Support</h2>
+              <p>Get instant help with your logistics queries.</p>
+            </div>
+          </div>
+
+          <div class="chat-layout">
+            <!-- Contacts -->
+            <div class="chat-contacts">
+              <div class="chat-contacts-header">
+                <h3>Support Agents</h3>
+              </div>
+              <div class="contact-item active">
+                <div class="contact-avatar">
+                  🤖
+                  <div class="contact-online"></div>
+                </div>
+                <div class="contact-info">
+                  <div class="contact-name">SmartSync Bot</div>
+                  <div class="contact-status">● Online</div>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">
+                  👩
+                  <div class="contact-online"></div>
+                </div>
+                <div class="contact-info">
+                  <div class="contact-name">Sarah (Logistics)</div>
+                  <div class="contact-status">● Online</div>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                  👨
+                </div>
+                <div class="contact-info">
+                  <div class="contact-name">Mike (Warehouse)</div>
+                  <div class="contact-status" style="color:var(--text-muted);">● Away</div>
+                </div>
+              </div>
+              <!-- Quick prompts -->
+              <div style="padding:16px;border-top:1px solid var(--border);margin-top:auto;">
+                <p style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:10px;">Quick Prompts</p>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <button class="quick-prompt-btn" style="text-align:left;padding:8px 10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;font-size:0.78rem;color:var(--text-secondary);cursor:pointer;transition:var(--transition);"
+                    onclick="document.getElementById('chat-input').value='Where is my shipment?';document.getElementById('chat-send').click();">
+                    📦 Where is my shipment?
+                  </button>
+                  <button class="quick-prompt-btn" style="text-align:left;padding:8px 10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;font-size:0.78rem;color:var(--text-secondary);cursor:pointer;transition:var(--transition);"
+                    onclick="document.getElementById('chat-input').value='My delivery is delayed';document.getElementById('chat-send').click();">
+                    ⚠️ My delivery is delayed
+                  </button>
+                  <button class="quick-prompt-btn" style="text-align:left;padding:8px 10px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;font-size:0.78rem;color:var(--text-secondary);cursor:pointer;transition:var(--transition);"
+                    onclick="document.getElementById('chat-input').value='How do I book a warehouse slot?';document.getElementById('chat-send').click();">
+                    🏭 How do I book a warehouse?
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chat Window -->
+            <div class="chat-window">
+              <div class="chat-topbar">
+                <div class="chat-avatar">🤖</div>
+                <div class="chat-topbar-info">
+                  <div class="chat-name">SmartSync Assistant</div>
+                  <div class="chat-status">● Online – Responds instantly</div>
+                </div>
+                <span style="margin-left:auto;font-size:0.75rem;color:var(--text-muted);">AI Support</span>
+              </div>
+              <div class="chat-body" id="chat-body" role="log" aria-live="polite"></div>
+              <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Chat message" />
+                <button class="btn-send" id="chat-send" aria-label="Send message">➤</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div><!-- end main-content -->
+  </div><!-- end app-layout -->
+
+  <!-- ═══════════════════════ TRACKING MODAL ═══════════════════════ -->
+  <div class="modal-overlay" id="tracking-modal" role="dialog" aria-modal="true" aria-label="Shipment Tracking">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>📦 Track: <span id="tracking-modal-id" style="color:var(--primary-light);font-family:'JetBrains Mono',monospace;font-size:1rem;"></span></h2>
+        <button class="modal-close" id="close-tracking" aria-label="Close tracking modal">✕</button>
+      </div>
+
+      <!-- Shipment Info Grid -->
+      <div class="tracking-info-grid">
+        <div class="tracking-info-item">
+          <div class="ti-label">Customer</div>
+          <div class="ti-value" id="tracking-customer">–</div>
+        </div>
+        <div class="tracking-info-item">
+          <div class="ti-label">Delivery Date</div>
+          <div class="ti-value" id="tracking-delivery-date">–</div>
+        </div>
+        <div class="tracking-info-item" style="grid-column:1/-1;">
+          <div class="ti-label">Route</div>
+          <div class="ti-value" id="tracking-route">–</div>
+        </div>
+        <div class="tracking-info-item" style="grid-column:1/-1;">
+          <div class="ti-label">Package Details</div>
+          <div class="ti-value" id="tracking-package">–</div>
+        </div>
+      </div>
+
+      <!-- Progress Steps -->
+      <h3 style="font-size:0.875rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">
+        Shipment Progress
+      </h3>
+      <div class="tracking-steps" id="tracking-steps"></div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button class="btn-advance" id="advance-status-btn">
+          ▶ Advance Status
+        </button>
+        <button class="btn-action" id="close-tracking-btn"
+          style="background:var(--bg-hover);color:var(--text-secondary);border:1px solid var(--border);"
+          onclick="document.getElementById('tracking-modal').classList.remove('show')">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/dashboard.js"></script>
+
+  <!-- Extra inline enhancements -->
+  <script type="module">
+    import { showToast } from "./js/auth.js";
+
+    // Topbar section name updater
+    const sectionNames = {
+      dashboard: "Dashboard", shipments: "Shipment Management",
+      tracking: "Live Tracking", route: "Route Planning",
+      warehouse: "Warehouse Booking", chat: "Chat Support"
+    };
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", () => {
+        const s = link.dataset.section;
+        document.getElementById("topbar-section-name").textContent = sectionNames[s] || "Dashboard";
+      });
+    });
+
+    // Sync user avatar initial
+    const observer = new MutationObserver(() => {
+      const nameEl = document.querySelector(".user-name");
+      if (nameEl && nameEl.textContent !== "Loading...") {
+        const initial = nameEl.textContent[0]?.toUpperCase() || "U";
+        document.getElementById("user-avatar-sidebar").textContent = initial;
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.querySelector(".user-name"), { childList: true, characterData: true, subtree: true });
+
+    // Notification button test
+    document.getElementById("notif-btn")?.addEventListener("click", () => {
+      showToast("No new notifications at this time.", "info");
+    });
+
+    // Shipment filter search
+    document.getElementById("shipment-search")?.addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll("#shipments-list .shipment-card").forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(q) ? "" : "none";
+      });
+    });
+
+    // Tracking search
+    document.getElementById("tracking-search-btn")?.addEventListener("click", () => {
+      const q = document.getElementById("tracking-search-input").value.trim().toUpperCase();
+      const cards = document.querySelectorAll("#tracking-shipments-list .shipment-card");
+      let found = false;
+      cards.forEach(card => {
+        const visible = !q || card.textContent.toUpperCase().includes(q);
+        card.style.display = visible ? "" : "none";
+        if (visible) found = true;
+      });
+      if (q && !found) showToast(`No shipment found for: ${q}`, "warning");
+    });
+
+    // Route map show/hide
+    document.getElementById("plan-route-btn")?.addEventListener("click", () => {
+      const ph = document.getElementById("map-placeholder");
+      const iframe = document.getElementById("route-map-frame");
+      if (ph) ph.style.display = "none";
+      if (iframe) iframe.style.display = "block";
+    }, { capture: true });
+
+    // Delivery overview counters — updated from dashboard.js via custom event
+    document.addEventListener("shipmentsLoaded", (e) => {
+      const ships = e.detail || [];
+      const count = (status) => ships.filter(s => s.status === status).length;
+      document.getElementById("count-order-placed").textContent    = count("Order Placed");
+      document.getElementById("count-picked-up").textContent       = count("Picked Up");
+      document.getElementById("count-in-transit").textContent      = count("In Transit");
+      document.getElementById("count-out-for-delivery").textContent= count("Out for Delivery");
+      document.getElementById("count-delivered").textContent       = count("Delivered");
+      document.getElementById("badge-shipments").textContent       = ships.length;
+      const rate = ships.length ? Math.round((count("Delivered") / ships.length) * 100) : 0;
+      document.getElementById("success-rate-text").textContent = rate + "%";
+      document.getElementById("success-rate-bar").style.width  = rate + "%";
+      // Mirror to tracking tab
+      const trackingList = document.getElementById("tracking-shipments-list");
+      if (trackingList) trackingList.innerHTML = document.getElementById("shipments-list").innerHTML;
+    });
+  </script>
+</body>
+</html>

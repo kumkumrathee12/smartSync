@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSync – Create Your Account</title>
+  <meta name="description" content="Join SmartSync, the modern logistics management platform. Manage shipments, deliveries, and warehouse bookings with ease." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>" />
+</head>
+<body>
+  <div id="toast-container"></div>
+
+  <div class="auth-page">
+    <!-- Left Visual Panel -->
+    <div class="auth-visual">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="auth-visual-content">
+        <div class="auth-logo-large">
+          <div class="logo-icon">🚚</div>
+          <span class="logo-text">SmartSync</span>
+        </div>
+        <h1 class="auth-tagline">
+          Your supply chain,<br><span>supercharged.</span>
+        </h1>
+        <p class="auth-sub">
+          Join thousands of businesses using SmartSync to manage their
+          logistics operations smarter, faster, and more efficiently.
+        </p>
+        <div class="auth-features">
+          <div class="auth-feature-item">
+            <div class="feat-icon">✅</div>
+            <span>Free to get started — no credit card required</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">🔒</div>
+            <span>Secure cloud storage with Firebase encryption</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">📊</div>
+            <span>Real-time analytics and shipment insights</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">🌍</div>
+            <span>Manage global routes with integrated mapping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Auth Panel -->
+    <div class="auth-panel">
+      <div class="auth-panel-header">
+        <h1>Create your account ✨</h1>
+        <p>Start managing logistics smarter today</p>
+      </div>
+
+      <form id="signup-form" novalidate>
+        <!-- Full Name -->
+        <div class="form-group" id="fg-name">
+          <label for="fullname">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="fullname" placeholder="John Smith" autocomplete="name" required />
+          </div>
+          <span class="form-error" id="err-name">Please enter your full name.</span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group" id="fg-email">
+          <label for="email">Work Email</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input type="email" id="email" placeholder="you@company.com" autocomplete="email" required />
+          </div>
+          <span class="form-error" id="err-email">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" id="fg-password">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password" required />
+            <button type="button" class="password-toggle" id="toggle-password" aria-label="Toggle password visibility">👁</button>
+          </div>
+          <span class="form-error" id="err-password">Password must be at least 6 characters.</span>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group" id="fg-confirm">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✅</span>
+            <input type="password" id="confirm-password" placeholder="Repeat password" autocomplete="new-password" required />
+          </div>
+          <span class="form-error" id="err-confirm">Passwords do not match.</span>
+        </div>
+
+        <!-- General Error -->
+        <div class="form-group" id="fg-general" style="display:none;">
+          <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:10px 14px;font-size:0.85rem;color:#ef4444;" id="err-general"></div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="signup-btn">
+          Create Account
+        </button>
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="login.html">Sign in →</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { signUp, showToast, redirectIfAuthenticated } from "./js/auth.js";
+
+    redirectIfAuthenticated();
+
+    const form        = document.getElementById("signup-form");
+    const nameInput   = document.getElementById("fullname");
+    const emailInput  = document.getElementById("email");
+    const passInput   = document.getElementById("password");
+    const confInput   = document.getElementById("confirm-password");
+    const signupBtn   = document.getElementById("signup-btn");
+    const togglePass  = document.getElementById("toggle-password");
+
+    togglePass.addEventListener("click", () => {
+      passInput.type = passInput.type === "password" ? "text" : "password";
+      togglePass.textContent = passInput.type === "password" ? "👁" : "🙈";
+    });
+
+    function validate() {
+      let valid = true;
+      // Name
+      if (!nameInput.value.trim() || nameInput.value.trim().length < 2) {
+        document.getElementById("fg-name").classList.add("has-error"); valid = false;
+      } else { document.getElementById("fg-name").classList.remove("has-error"); }
+      // Email
+      if (!emailInput.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+        document.getElementById("fg-email").classList.add("has-error"); valid = false;
+      } else { document.getElementById("fg-email").classList.remove("has-error"); }
+      // Password
+      if (passInput.value.length < 6) {
+        document.getElementById("fg-password").classList.add("has-error"); valid = false;
+      } else { document.getElementById("fg-password").classList.remove("has-error"); }
+      // Confirm
+      if (confInput.value !== passInput.value) {
+        document.getElementById("fg-confirm").classList.add("has-error"); valid = false;
+      } else { document.getElementById("fg-confirm").classList.remove("has-error"); }
+      return valid;
+    }
+
+    [nameInput, emailInput, passInput, confInput].forEach(inp => inp.addEventListener("input", () => {
+      inp.closest(".form-group").classList.remove("has-error");
+      document.getElementById("fg-general").style.display = "none";
+    }));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+      signupBtn.disabled = true;
+      signupBtn.innerHTML = '<span class="spinner"></span> Creating account...';
+      try {
+        await signUp(nameInput.value.trim(), emailInput.value.trim(), passInput.value);
+        showToast("Account created! Welcome to SmartSync 🎉", "success");
+        setTimeout(() => window.location.href = "dashboard.html", 900);
+      } catch (err) {
+        const fg = document.getElementById("fg-general");
+        document.getElementById("err-general").textContent = err.message;
+        fg.style.display = "block";
+        showToast(err.message, "error");
+      } finally {
+        signupBtn.disabled = false;
+        signupBtn.innerHTML = "Create Account";
+      }
+    });
+  </script>
+</body>
+</html>

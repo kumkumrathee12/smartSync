@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSync – Login to Your Account</title>
+  <meta name="description" content="Sign in to SmartSync, the modern logistics management platform for shipments, deliveries, and warehouse management." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>" />
+</head>
+<body>
+  <div id="toast-container"></div>
+
+  <div class="auth-page">
+    <!-- Left Visual Panel -->
+    <div class="auth-visual">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="auth-visual-content">
+        <div class="auth-logo-large">
+          <div class="logo-icon">🚚</div>
+          <span class="logo-text">SmartSync</span>
+        </div>
+        <h1 class="auth-tagline">
+          Logistics<br>management,<br><span>reimagined.</span>
+        </h1>
+        <p class="auth-sub">
+          Track shipments in real-time, manage warehouse bookings,
+          and streamline your entire supply chain from one powerful dashboard.
+        </p>
+        <div class="auth-features">
+          <div class="auth-feature-item">
+            <div class="feat-icon">📦</div>
+            <span>Real-time shipment tracking with live status updates</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">🗺️</div>
+            <span>Intelligent route planning and distance estimation</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">🏭</div>
+            <span>Smart warehouse slot booking with calendar interface</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="feat-icon">💬</div>
+            <span>24/7 automated logistics support chat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Auth Panel -->
+    <div class="auth-panel">
+      <div class="auth-panel-header">
+        <h1>Welcome back 👋</h1>
+        <p>Sign in to access your SmartSync dashboard</p>
+      </div>
+
+      <form id="login-form" novalidate>
+        <!-- Email -->
+        <div class="form-group" id="fg-email">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input type="email" id="email" placeholder="you@company.com" autocomplete="email" required />
+          </div>
+          <span class="form-error" id="err-email">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group" id="fg-password">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
+            <button type="button" class="password-toggle" id="toggle-password" aria-label="Toggle password visibility">👁</button>
+          </div>
+          <span class="form-error" id="err-password">Password must be at least 6 characters.</span>
+        </div>
+
+        <!-- General Error -->
+        <div class="form-group" id="fg-general" style="display:none;">
+          <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:10px 14px;font-size:0.85rem;color:#ef4444;" id="err-general"></div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="login-btn">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-divider">or continue as demo</div>
+
+      <button class="btn-primary" id="demo-btn" style="background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(99,102,241,0.1));border:1px solid rgba(99,102,241,0.3);box-shadow:none;">
+        🚀 Try Demo Account
+      </button>
+
+      <p class="auth-switch">
+        Don't have an account? <a href="index.html">Create one free →</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { signIn, showToast, redirectIfAuthenticated } from "./js/auth.js";
+
+    // Redirect if already logged in
+    redirectIfAuthenticated();
+
+    const form        = document.getElementById("login-form");
+    const emailInput  = document.getElementById("email");
+    const passInput   = document.getElementById("password");
+    const loginBtn    = document.getElementById("login-btn");
+    const demoBtn     = document.getElementById("demo-btn");
+    const togglePass  = document.getElementById("toggle-password");
+
+    // Password visibility toggle
+    togglePass.addEventListener("click", () => {
+      passInput.type = passInput.type === "password" ? "text" : "password";
+      togglePass.textContent = passInput.type === "password" ? "👁" : "🙈";
+    });
+
+    // Validate fields
+    function validate() {
+      let valid = true;
+      // Email
+      const emailFg = document.getElementById("fg-email");
+      if (!emailInput.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+        emailFg.classList.add("has-error"); valid = false;
+      } else { emailFg.classList.remove("has-error"); }
+      // Password
+      const passFg = document.getElementById("fg-password");
+      if (passInput.value.length < 6) {
+        passFg.classList.add("has-error"); valid = false;
+      } else { passFg.classList.remove("has-error"); }
+      return valid;
+    }
+
+    // Remove error on input
+    [emailInput, passInput].forEach(inp => inp.addEventListener("input", () => {
+      inp.closest(".form-group").classList.remove("has-error");
+      document.getElementById("fg-general").style.display = "none";
+    }));
+
+    // Submit
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="spinner"></span> Signing in...';
+      try {
+        await signIn(emailInput.value.trim(), passInput.value);
+        showToast("Login successful! Redirecting... 🎉", "success");
+        setTimeout(() => window.location.href = "dashboard.html", 800);
+      } catch (err) {
+        const fg = document.getElementById("fg-general");
+        document.getElementById("err-general").textContent = err.message;
+        fg.style.display = "block";
+        showToast(err.message, "error");
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = "Sign In";
+      }
+    });
+
+    // Demo login
+    demoBtn.addEventListener("click", async () => {
+      demoBtn.disabled = true;
+      demoBtn.textContent = "Loading demo...";
+      // Create demo user in localStorage if not exists
+      const users = JSON.parse(localStorage.getItem("ss_users") || "{}");
+      if (!users["demo@smartsync.io"]) {
+        users["demo@smartsync.io"] = { name: "Demo User", email: "demo@smartsync.io", password: "demo123" };
+        localStorage.setItem("ss_users", JSON.stringify(users));
+      }
+      // Add demo shipments
+      const existing = JSON.parse(localStorage.getItem("ss_shipments") || "[]");
+      if (!existing.find(s => s.userId === "demo@smartsync.io")) {
+        const demoShipments = [
+          { id:"ds1", trackingId:"SSABC001", customerName:"Acme Corp", pickupLocation:"Mumbai, MH", deliveryLocation:"Delhi, DL", packageDetails:"Electronics - 5kg", deliveryDate:"2026-10-10", status:"In Transit", statusIndex:2, userId:"demo@smartsync.io", createdAt: new Date().toISOString() },
+          { id:"ds2", trackingId:"SSABC002", customerName:"TechFlow Ltd", pickupLocation:"Bangalore, KA", deliveryLocation:"Chennai, TN", packageDetails:"Auto Parts - 12kg", deliveryDate:"2026-10-08", status:"Out for Delivery", statusIndex:3, userId:"demo@smartsync.io", createdAt: new Date().toISOString() },
+          { id:"ds3", trackingId:"SSABC003", customerName:"GlobalTrade Inc", pickupLocation:"Hyderabad, TS", deliveryLocation:"Pune, MH", packageDetails:"Textiles - 8kg", deliveryDate:"2026-10-05", status:"Delivered", statusIndex:4, userId:"demo@smartsync.io", createdAt: new Date().toISOString() },
+          { id:"ds4", trackingId:"SSABC004", customerName:"Sunrise Foods", pickupLocation:"Kolkata, WB", deliveryLocation:"Ahmedabad, GJ", packageDetails:"Food Items - 15kg", deliveryDate:"2026-10-12", status:"Order Placed", statusIndex:0, userId:"demo@smartsync.io", createdAt: new Date().toISOString() },
+        ];
+        localStorage.setItem("ss_shipments", JSON.stringify([...demoShipments, ...existing]));
+      }
+      try {
+        await signIn("demo@smartsync.io", "demo123");
+        showToast("Welcome to the demo! 🚀", "success");
+        setTimeout(() => window.location.href = "dashboard.html", 800);
+      } catch (err) {
+        showToast("Demo failed: " + err.message, "error");
+      } finally {
+        demoBtn.disabled = false;
+        demoBtn.innerHTML = "🚀 Try Demo Account";
+      }
+    });
+  </script>
+</body>
+</html>
