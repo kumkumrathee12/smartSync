@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartSync Logistics Platform – Project Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    @page {
+      size: A4;
+      margin: 12mm 14mm 12mm 14mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8.5pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      line-height: 1.5;
+      font-size: 9.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Cover / Hero Header */
+    .header-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #312e81 100%);
+      color: #ffffff;
+      padding: 32px 28px;
+      border-radius: 12px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-hero::after {
+      content: "";
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99, 102, 241, 0.25);
+      border: 1px solid rgba(165, 180, 252, 0.3);
+      color: #c7d2fe;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 8pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .header-hero h1 {
+      font-size: 24pt;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .header-hero .subtitle {
+      font-size: 10.5pt;
+      color: #cbd5e1;
+      max-width: 680px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 14px;
+    }
+
+    .meta-item .meta-label {
+      font-size: 7pt;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+
+    .meta-item .meta-val {
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    .meta-item a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    /* Typography & Sections */
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin: 18px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 5px;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    h2 .icon {
+      font-size: 14pt;
+    }
+
+    h3 {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 14px 0 6px 0;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 9.5pt;
+    }
+
+    /* Cards & Grids */
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      page-break-inside: avoid;
+    }
+
+    .feature-card.highlight {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+    }
+
+    .feature-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 10pt;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .feature-card p {
+      font-size: 8.5pt;
+      color: #475569;
+      margin-bottom: 0;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 8.5pt;
+      page-break-inside: avoid;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-weight: 600;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 600;
+    }
+
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    /* Code blocks */
+    pre, code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 8pt;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin: 8px 0;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Flow / Pipeline diagram */
+    .flow-steps {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      margin: 12px 0;
+      page-break-inside: avoid;
+    }
+
+    .flow-step {
+      flex: 1;
+      background: #f1f5f9;
+      border-top: 3px solid #6366f1;
+      border-radius: 0 0 6px 6px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .flow-step-num {
+      font-size: 7pt;
+      font-weight: 700;
+      color: #6366f1;
+      text-transform: uppercase;
+    }
+
+    .flow-step-title {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 2px 0;
+    }
+
+    .flow-step-desc {
+      font-size: 7pt;
+      color: #64748b;
+    }
+
+    .callout {
+      border-left: 4px solid #6366f1;
+      background: #eef2ff;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 12px 0;
+      font-size: 9pt;
+      color: #3730a3;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .footer-note {
+      margin-top: 30px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 8pt;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO COVER -->
+  <div class="header-hero">
+    <div class="badge-pill">Enterprise Architecture & Project Specification</div>
+    <h1>SmartSync</h1>
+    <div class="subtitle">Next-Generation Cloud Logistics & Supply Chain Management Web Platform</div>
+    
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Author / Maintainer</div>
+        <div class="meta-val">Kumkum Rathee</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Tech Stack</div>
+        <div class="meta-val">HTML5, CSS3, JS, Firebase</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">GitHub Repository</div>
+        <div class="meta-val"><a href="https://github.com/kumkumrathee12/smartSync">kumkumrathee12/smartSync</a></div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Live Deployment</div>
+        <div class="meta-val"><a href="https://kumkumrathee12.github.io/smartSync/">GitHub Pages Live</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. EXECUTIVE SUMMARY & PROBLEM STATEMENT -->
+  <h2><span class="icon">📋</span> 1. Executive Summary & Objective</h2>
+  <p>
+    <strong>SmartSync</strong> is a high-performance, modern web application designed for modern supply chain companies, third-party logistics (3PL) providers, freight operators, and e-commerce fulfillment teams. In traditional logistics, managers juggle disconnected spreadsheets, phone calls, and cumbersome software to track parcels, route drivers, and schedule warehouse bays.
+  </p>
+  <p>
+    SmartSync consolidates these fragmented workflows into a single, cohesive, cloud-connected dashboard offering end-to-end visibility: from instant shipment creation and real-time five-stage parcel tracking to intelligent route distance planning, warehouse bay scheduling, and automated AI assistance.
+  </p>
+
+  <div class="card-grid-3">
+    <div class="feature-card highlight">
+      <div class="feature-card-header">⚡ Instant Visibility</div>
+      <p>Real-time analytics on shipment stages, active deliveries, and transit bottlenecks.</p>
+    </div>
+    <div class="feature-card highlight">
+      <div class="feature-card-header">🛡️ Zero-Config Offline Fallback</div>
+      <p>Full functionality in offline/demo mode via localStorage if Firebase credentials are omitted.</p>
+    </div>
+    <div class="feature-card highlight">
+      <div class="feature-card-header">☁️ Real-time Cloud Sync</div>
+      <p>Seamless Firestore synchronisation across multiple sessions and team members.</p>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- 2. SYSTEM ARCHITECTURE & TECH STACK -->
+  <h2><span class="icon">🏗️</span> 2. Architecture & Technology Stack</h2>
+  <p>
+    SmartSync is engineered using a modular, standards-compliant architectural model with zero heavy build steps, ensuring ultra-fast load times and straightforward maintenance.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Technologies</th>
+        <th>Architectural Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Presentation / UI</strong></td>
+        <td>HTML5, CSS3 Custom Properties (Design Tokens), Glassmorphism</td>
+        <td>Responsive dark-mode UI with sleek gradients, micro-animations, and high-DPI icons.</td>
+      </tr>
+      <tr>
+        <td><strong>Client Logic</strong></td>
+        <td>Vanilla JavaScript (ES6+ Modules)</td>
+        <td>Component lifecycle, event delegation, client-side validation, and state management.</td>
+      </tr>
+      <tr>
+        <td><strong>Authentication</strong></td>
+        <td>Firebase Auth v10 (Modular SDK) + Demo Fallback</td>
+        <td>Email/password credentials, token management, session persistence, and route protection.</td>
+      </tr>
+      <tr>
+        <td><strong>Database / Storage</strong></td>
+        <td>Cloud Firestore (NoSQL) & LocalStorage</td>
+        <td>Real-time collection listeners, atomic document creation, and offline caching.</td>
+      </tr>
+      <tr>
+        <td><strong>Maps & Distance</strong></td>
+        <td>Google Maps External API & Haversine Distance Estimator</td>
+        <td>Route distance calculations, travel time estimates, and direct map navigation links.</td>
+      </tr>
+      <tr>
+        <td><strong>Hosting & CI/CD</strong></td>
+        <td>GitHub Pages, Git Version Control</td>
+        <td>Globally distributed edge hosting with continuous deployment from the <code>main</code> branch.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3. PROJECT DIRECTORY STRUCTURE -->
+  <h2><span class="icon">📁</span> 3. Project File Structure & Module Breakdown</h2>
+  <pre>
+smartSync/
+│
+├── index.html            # User registration (Sign Up) portal with real-time validation
+├── login.html            # Secure authentication portal with 1-click Demo Account launcher
+├── dashboard.html        # Comprehensive operations dashboard & logistics control center
+│
+├── css/
+│   └── style.css         # Unified design system: dark mode tokens, typography, layout & cards
+│
+├── js/
+│   ├── firebase.js       # Firebase SDK v10 initialization & Firestore export configurations
+│   ├── auth.js           # Auth state listeners, login/signup handlers & localStorage fallback
+│   └── dashboard.js      # Shipment CRUD, live tracking, route planner, warehouse bookings & AI chat
+│
+├── .gitignore            # Git configuration ignoring node_modules, keys, and OS artifacts
+└── README.md             # Complete project documentation with live demo badge & setup guide
+  </pre>
+
+  <div class="page-break"></div>
+
+  <!-- 4. CORE FEATURES & FUNCTIONAL SPECIFICATION -->
+  <h2><span class="icon">🚀</span> 4. Deep-Dive Feature Breakdown</h2>
+
+  <h3>4.1. Dual-Mode Authentication System (Firebase + Demo Mode)</h3>
+  <p>
+    SmartSync guarantees 100% zero-friction onboarding. Users can connect their own production Firebase project or immediately explore the live application via the built-in <strong>"Try Demo Account"</strong> button without registering.
+  </p>
+  <ul>
+    <li><strong>Client-Side Validation:</strong> Password strength enforcement, email regex verification, and dynamic visual error states.</li>
+    <li><strong>Route Guarding:</strong> Unauthenticated users attempting to access <code>dashboard.html</code> are automatically redirected to <code>login.html</code>.</li>
+    <li><strong>Session Lifecycle:</strong> Seamless logout routines clearing active tokens while preserving offline test data.</li>
+  </ul>
+
+  <h3>4.2. Central Operations Dashboard</h3>
+  <p>
+    Provides logistics dispatchers with at-a-glance operational metrics:
+  </p>
+  <div class="card-grid-2">
+    <div class="feature-card">
+      <div class="feature-card-header">📊 Dynamic KPI Metrics</div>
+      <p>Calculates live totals for All Shipments, Active In-Transit Packages, Completed Deliveries, and Reserved Warehouse Slots.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-card-header">⚡ Recent Operational Log</div>
+      <p>Chronological feed of timestamped dispatch actions, delivery milestones, and booking confirmations.</p>
+    </div>
+  </div>
+
+  <h3>4.3. Five-Stage Visual Shipment Tracker</h3>
+  <p>
+    Every shipment features an enterprise-grade visual progress bar that highlights current parcel disposition:
+  </p>
+
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-step-num">Stage 1</div>
+      <div class="flow-step-title">Order Placed</div>
+      <div class="flow-step-desc">Booking logged</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Stage 2</div>
+      <div class="flow-step-title">Picked Up</div>
+      <div class="flow-step-desc">Driver collected</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Stage 3</div>
+      <div class="flow-step-title">In Transit</div>
+      <div class="flow-step-desc">Hub transfer</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Stage 4</div>
+      <div class="flow-step-title">Out for Delivery</div>
+      <div class="flow-step-desc">Last-mile van</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">Stage 5</div>
+      <div class="flow-step-title">Delivered</div>
+      <div class="flow-step-desc">Recipient signed</div>
+    </div>
+  </div>
+
+  <h3>4.4. Route Planning & Distance Engine</h3>
+  <p>
+    Allows operators to enter <em>Origin</em> and <em>Destination</em> hubs. The built-in engine computes approximate driving distance, estimated transit duration, and fuel consumption tier, featuring a direct integration button to open live turn-by-turn directions in Google Maps.
+  </p>
+
+  <h3>4.5. Warehouse Bay Scheduling System</h3>
+  <p>
+    Enables freight forwarders to reserve loading dock bays across regional distribution centers (e.g., North Hub Bay A-12, Metro Logistics Center Dock 4), preventing yard congestion and driver demurrage fees.
+  </p>
+
+  <h3>4.6. Intelligent Virtual Assistant (LogiBot)</h3>
+  <p>
+    An interactive, slide-out customer support assistant capable of addressing common logistics queries, tracking shipments by ID, providing delivery estimates, and guiding users through warehouse booking rules.
+  </p>
+
+  <div class="page-break"></div>
+
+  <!-- 5. DATA SCHEMA & FIRESTORE SPECIFICATION -->
+  <h2><span class="icon">💾</span> 5. Data Model & Collection Schema</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Collection / Key</th>
+        <th>Field Name</th>
+        <th>Data Type</th>
+        <th>Description / Sample Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="8"><code>shipments</code></td>
+        <td><code>trackingId</code></td>
+        <td>String</td>
+        <td>Unique code, e.g. <code>SYNC-849201</code></td>
+      </tr>
+      <tr>
+        <td><code>customerName</code></td>
+        <td>String</td>
+        <td>Full client / recipient name</td>
+      </tr>
+      <tr>
+        <td><code>pickupLocation</code></td>
+        <td>String</td>
+        <td>Warehouse or supplier origin address</td>
+      </tr>
+      <tr>
+        <td><code>deliveryLocation</code></td>
+        <td>String</td>
+        <td>Final customer delivery destination</td>
+      </tr>
+      <tr>
+        <td><code>packageDetails</code></td>
+        <td>String</td>
+        <td>Cargo classification (e.g. <em>Electronics, 14.5 kg</em>)</td>
+      </tr>
+      <tr>
+        <td><code>deliveryDate</code></td>
+        <td>Timestamp / Date</td>
+        <td>Estimated or committed delivery date</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td>String</td>
+        <td><code>"Placed"</code> | <code>"In Transit"</code> | <code>"Delivered"</code></td>
+      </tr>
+      <tr>
+        <td><code>createdAt</code></td>
+        <td>Timestamp</td>
+        <td>System creation timestamp</td>
+      </tr>
+      <tr>
+        <td rowspan="4"><code>warehouse_bookings</code></td>
+        <td><code>facilityId</code></td>
+        <td>String</td>
+        <td>Target distribution center ID</td>
+      </tr>
+      <tr>
+        <td><code>bayNumber</code></td>
+        <td>String</td>
+        <td>Assigned loading dock (e.g., <code>Dock 3B</code>)</td>
+      </tr>
+      <tr>
+        <td><code>bookingDate</code></td>
+        <td>Date</td>
+        <td>Scheduled arrival timeslot</td>
+      </tr>
+      <tr>
+        <td><code>vehicleNumber</code></td>
+        <td>String</td>
+        <td>Truck / container registration number</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 6. FIREBASE DEPLOYMENT & SETUP GUIDE -->
+  <h2><span class="icon">🔧</span> 6. Step-by-Step Firebase Integration Guide</h2>
+  <p>To connect your own real-time Google Cloud Firebase backend, follow these 4 steps:</p>
+
+  <div class="callout" style="margin: 8px 0; padding: 8px 12px;">
+    <strong>File Reference:</strong> Update the configuration object in <code>js/firebase.js</code> lines 15 to 22 with your project keys.
+  </div>
+
+  <pre style="margin: 6px 0; padding: 8px 12px;"><code>// js/firebase.js
+const firebaseConfig = {
+  apiKey: "AIzaSyYourActualAPIKeyHere...",
+  authDomain: "your-smartsync-app.firebaseapp.com",
+  projectId: "your-smartsync-app",
+  storageBucket: "your-smartsync-app.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef123456"
+};</code></pre>
+
+  <ol style="margin-left: 20px; font-size: 8.5pt; color: #334155; line-height: 1.55;">
+    <li>Open the <a href="https://console.firebase.google.com/">Firebase Console</a> and click <strong>"Create a project"</strong>.</li>
+    <li>Navigate to <strong>Authentication</strong> &rarr; click <strong>Get Started</strong> &rarr; enable <strong>Email/Password</strong> sign-in method.</li>
+    <li>Navigate to <strong>Firestore Database</strong> &rarr; click <strong>Create Database</strong> &rarr; select <strong>Start in test mode</strong> for development.</li>
+    <li>Go to <strong>Project Settings (gear icon)</strong> &rarr; scroll to <strong>Your apps</strong> &rarr; click Web (<code>&lt;/&gt;</code>) &rarr; copy the <code>firebaseConfig</code> values into <code>js/firebase.js</code>.</li>
+  </ol>
+
+  <div class="page-break"></div>
+
+  <!-- 7. GITHUB PAGES DEPLOYMENT SPECIFICATION -->
+  <h2><span class="icon">🌐</span> 7. Hosting & Deployment Specifications</h2>
+  <p>
+    SmartSync is optimized for serverless static hosting via <strong>GitHub Pages</strong>. The app requires zero build runners (such as Webpack or Vite), loading directly via native modern browser ES Modules:
+  </p>
+  <ul>
+    <li><strong>Production URL:</strong> <code>https://kumkumrathee12.github.io/smartSync/</code></li>
+    <li><strong>Branch Target:</strong> <code>main</code> branch, <code>/(root)</code> directory</li>
+    <li><strong>SSL/TLS Certificate:</strong> Automatically provisioned by Let's Encrypt / GitHub Inc.</li>
+    <li><strong>CDN Caching:</strong> Fastly Edge Network with automatic invalidation upon each <code>git push</code>.</li>
+  </ul>
+
+  <!-- 8. FUTURE EXTENSION ROADMAP -->
+  <h2><span class="icon">🔮</span> 8. Strategic Roadmap & Scalability Upgrades</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Milestone Feature</th>
+        <th>Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Phase 2</strong></td>
+        <td><strong>Live GPS Telemetry</strong></td>
+        <td>WebSocket or Firebase Realtime DB stream tracking delivery driver latitude/longitude on dynamic Leaflet / Mapbox layers.</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 3</strong></td>
+        <td><strong>Barcode & QR Scanner</strong></td>
+        <td>Camera-based HTML5 QR code scanning for warehouse dock workers to dispatch and receive shipments with zero typing.</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 4</strong></td>
+        <td><strong>Automated PDF Invoicing</strong></td>
+        <td>One-click client freight bill & bill of lading (BOL) generation with custom tax calculations.</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 5</strong></td>
+        <td><strong>Role-Based Access Control (RBAC)</strong></td>
+        <td>Distinct access permissions for Drivers, Warehouse Managers, Corporate Admins, and End Customers.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <span>SmartSync Logistics Platform Documentation</span>
+    <span>Generated for Kumkum Rathee • Repository: github.com/kumkumrathee12/smartSync</span>
+  </div>
+
+</body>
+</html>
