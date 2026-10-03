@@ -2,9 +2,11 @@
 
 > A modern, full-featured logistics dashboard built with HTML, CSS, Vanilla JavaScript & Firebase.
 
-![SmartSync Banner](https://img.shields.io/badge/SmartSync-Logistics%20Platform-6366f1?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48dGV4dCB5PSIuOWVtIiBmb250LXNpemU9IjkwIj7wn5qUPC90ZXh0Pjwvc3ZnPg==)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20on%20GitHub%20Pages-22c55e?style=for-the-badge&logo=github)](https://kumkumrathee12.github.io/smartSync/)
 ![Firebase](https://img.shields.io/badge/Firebase-Integrated-FF6D00?style=for-the-badge&logo=firebase)
 ![Vanilla JS](https://img.shields.io/badge/Vanilla-JavaScript-F7DF1E?style=for-the-badge&logo=javascript)
+
+🌐 **Live Demo Website:** [https://kumkumrathee12.github.io/smartSync/](https://kumkumrathee12.github.io/smartSync/)
 
 ---
 
