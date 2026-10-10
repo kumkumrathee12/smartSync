@@ -1,42 +1,42 @@
-/* ═══ DESIGN TOKENS & CSS VARIABLES ════════════════════════════════════ */
+/* ═══ DESIGN TOKENS & CSS VARIABLES (EYE-FRIENDLY REFINED PALETTE) ═══ */
 :root {
-  --bg:          #07090f;
-  --bg2:         #0d111a;
-  --bg3:         #131722;
-  --card-bg:     rgba(13, 17, 26, 0.78);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --border-h:    rgba(139, 92, 246, 0.45);
-  --text:        #f1f5f9;
-  --text-dim:    #94a3b8;
-  --muted:       #64748b;
+  --bg:          #0d1117;
+  --bg2:         #151b23;
+  --bg3:         #1c2128;
+  --card-bg:     rgba(21, 27, 35, 0.82);
+  --card-border: rgba(255, 255, 255, 0.07);
+  --border-h:    rgba(167, 139, 250, 0.35);
+  --text:        #c9d1d9;
+  --text-dim:    #8b949e;
+  --muted:       #6e7681;
   
   --accent:      #8b5cf6;
   --accent-light:#a78bfa;
-  --accent2:     #06b6d4;
-  --green:       #10b981;
-  --orange:      #f97316;
-  --pink:        #ec4899;
-  --blue:        #3b82f6;
+  --accent2:     #38bdf8;
+  --green:       #34d399;
+  --orange:      #fb923c;
+  --pink:        #f472b6;
+  --blue:        #60a5fa;
   
-  --radius:      18px;
+  --radius:      16px;
   --rsm:         10px;
-  --shadow:      0 12px 36px -8px rgba(0, 0, 0, 0.65);
-  --glow:        0 0 25px rgba(139, 92, 246, 0.25);
+  --shadow:      0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --glow:        0 0 20px rgba(139, 92, 246, 0.15);
   --nav-h:       68px;
 }
 
 [data-theme="light"] {
-  --bg:          #f6f8fc;
+  --bg:          #f8fafc;
   --bg2:         #ffffff;
-  --bg3:         #edf2f7;
-  --card-bg:     rgba(255, 255, 255, 0.88);
-  --card-border: rgba(0, 0, 0, 0.08);
-  --border-h:    rgba(139, 92, 246, 0.4);
-  --text:        #0f172a;
-  --text-dim:    #334155;
+  --bg3:         #f1f5f9;
+  --card-bg:     rgba(255, 255, 255, 0.92);
+  --card-border: rgba(0, 0, 0, 0.07);
+  --border-h:    rgba(139, 92, 246, 0.35);
+  --text:        #334155;
+  --text-dim:    #475569;
   --muted:       #64748b;
-  --shadow:      0 12px 32px -8px rgba(15, 23, 42, 0.08);
-  --glow:        0 0 25px rgba(139, 92, 246, 0.15);
+  --shadow:      0 10px 28px -8px rgba(15, 23, 42, 0.06);
+  --glow:        0 0 20px rgba(139, 92, 246, 0.12);
 }
 
 /* ═══ RESET & BASE STYLES ══════════════════════════════════════════════ */
@@ -456,19 +456,19 @@ code {
 }
 
 .hero-name {
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
-  font-weight: 800;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #ffffff 25%, var(--accent-light) 75%, var(--accent) 100%);
+  font-size: clamp(2.3rem, 4.8vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #e6edf3 30%, var(--accent-light) 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 12px;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
 }
 
 [data-theme="light"] .hero-name {
-  background: linear-gradient(135deg, #0f172a 20%, var(--accent) 100%);
+  background: linear-gradient(135deg, #1e293b 30%, var(--accent) 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }

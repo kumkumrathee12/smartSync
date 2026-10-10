@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kumkum Rathee – Resume</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
   <style>
     /* ═══ ATS-OPTIMIZED CLEAN STYLING ═══════════════════════════════ */
     :root {
       --primary: #1e293b;
-      --accent:  #4f46e5;
+      --accent: #4f46e5;
       --accent-hover: #3730a3;
-      --text:    #0f172a;
-      --muted:   #475569;
-      --light:   #f8fafc;
-      --border:  #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --light: #f8fafc;
+      --border: #e2e8f0;
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -88,24 +93,42 @@
     .header {
       text-align: center;
       border-bottom: 2px solid var(--primary);
-      padding-bottom: 14px;
-      margin-bottom: 16px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .header-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 6px;
+    }
+
+    .resume-photo {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 18%;
+      border: 2px solid var(--accent);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      flex-shrink: 0;
     }
 
     .name {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 800;
       color: var(--primary);
       letter-spacing: -0.02em;
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .headline {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--muted);
-      margin-bottom: 8px;
     }
 
     .contact-row {
@@ -365,16 +388,23 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- Top Action Bar (Hidden in Print / PDF) -->
   <div class="action-bar">
     <button class="action-btn" onclick="window.print()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 6 2 18 2 18 9" />
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+        <rect x="6" y="14" width="12" height="8" />
+      </svg>
       Print / Save as PDF (All Clickable Links)
     </button>
     <a href="index.html" class="action-btn sec">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7" />
+      </svg>
       Back to Portfolio
     </a>
   </div>
@@ -384,9 +414,14 @@
 
     <!-- ═══ HEADER ═══ -->
     <header class="header">
-      <h1 class="name">Kumkum Rathee</h1>
-      <p class="headline">B.Tech Information Technology &bull; Full-Stack Developer &bull; Competitive Programmer</p>
-      
+      <div class="header-layout">
+        <img src="photo.jpg" alt="Kumkum Rathee" class="resume-photo" onerror="this.src='github_avatar.jpg';" />
+        <div>
+          <h1 class="name">Kumkum Rathee</h1>
+          <p class="headline">B.Tech Information Technology &bull; Full-Stack Developer &bull; Competitive Programmer</p>
+        </div>
+      </div>
+
       <div class="contact-row">
         <span class="contact-item">
           📍 Delhi, India
@@ -412,10 +447,18 @@
       </div>
     </header>
 
+    <!-- ═══ ABOUT ME / SUMMARY ═══ -->
+    <section class="section">
+      <h2 class="section-title">About Me / Summary</h2>
+      <p style="font-size: 12.5px; color: #1e293b; line-height: 1.45; text-align: justify; margin-bottom: 4px;">
+        B.Tech Information Technology student at BPIT maintaining a <strong>9.5 CGPA</strong> with strong foundations in C++, Data Structures &amp; Algorithms, and Object-Oriented Programming. Solved <strong>400+ coding problems</strong>, published a peer-reviewed AI/ML research paper in <strong>Taylor &amp; Francis</strong>, and earned an <strong>NPTEL Elite + Silver</strong> certification in Machine Learning (83%). 2x Smart India Hackathon internal round qualifier building robust, scalable full-stack web applications focused on real-time data, monitoring, and user-centered design.
+      </p>
+    </section>
+
     <!-- ═══ EDUCATION ═══ -->
     <section class="section">
       <h2 class="section-title">Education</h2>
-      
+
       <div class="entry">
         <div class="entry-header">
           <span>Bhagwan Parshuram Institute of Technology (BPIT), GGSIPU</span>
@@ -460,11 +503,13 @@
         </tr>
         <tr>
           <td class="skill-lbl">CS Fundamentals:</td>
-          <td class="skill-val">Data Structures &amp; Algorithms (DSA), OOP, DBMS, Operating Systems, Computer Networks, Multithreading</td>
+          <td class="skill-val">Data Structures &amp; Algorithms (DSA), OOP, DBMS, Operating Systems, Computer Networks,
+            Multithreading</td>
         </tr>
         <tr>
           <td class="skill-lbl">Web &amp; Backend:</td>
-          <td class="skill-val">Node.js, Express.js, RESTful APIs, Firebase (Firestore &amp; Auth), JWT, Leaflet.js, Responsive UI</td>
+          <td class="skill-val">Node.js, Express.js, RESTful APIs, Firebase (Firestore &amp; Auth), JWT, Leaflet.js,
+            Responsive UI</td>
         </tr>
         <tr>
           <td class="skill-lbl">Tools &amp; Databases:</td>
@@ -485,10 +530,13 @@
             <a href="https://github.com/kumkumrathee12" target="_blank" rel="noopener">[Source Code]</a>
           </span>
         </div>
-        <div class="proj-tech">JavaScript (ES6+), Vite, Leaflet.js, AI Analytics &bull; <em>Smart India Hackathon (SIH) Qualifier</em></div>
+        <div class="proj-tech">JavaScript (ES6+), Vite, Leaflet.js, AI Analytics &bull; <em>Smart India Hackathon (SIH)
+            Qualifier</em></div>
         <ul class="bullets">
-          <li>Architected 4-tier hierarchical access gateway (<em>Coal India &rarr; Subsidiary &rarr; Area &rarr; Mine</em>) with <strong>5 distinct role-based dashboards</strong> for safety officers and executives.</li>
-          <li>Integrated AI risk scoring, real-time alert severity categorization, automated SOS emergency dispatch, and live satellite fleet tracking on interactive Leaflet maps.</li>
+          <li>Architected 4-tier hierarchical access gateway (<em>Coal India &rarr; Subsidiary &rarr; Area &rarr;
+              Mine</em>) with <strong>5 distinct role-based dashboards</strong> for safety officers and executives.</li>
+          <li>Integrated AI risk scoring, real-time alert severity categorization, automated SOS emergency dispatch, and
+            live satellite fleet tracking on interactive Leaflet maps.</li>
         </ul>
       </div>
 
@@ -503,8 +551,11 @@
         </div>
         <div class="proj-tech">JavaScript (ES6+), Firebase Auth, Cloud Firestore, Google Maps API, CSS3</div>
         <ul class="bullets">
-          <li>Engineered full-stack logistics portal supporting Firebase Email/Password Auth plus instant offline localStorage demo mode.</li>
-          <li>Developed visual 5-stage shipment lifecycle tracker (<em>Booked &rarr; Dispatched &rarr; In Transit &rarr; Out for Delivery &rarr; Delivered</em>), slot reservation calendar, and automated route distance calculation.</li>
+          <li>Engineered full-stack logistics portal supporting Firebase Email/Password Auth plus instant offline
+            localStorage demo mode.</li>
+          <li>Developed visual 5-stage shipment lifecycle tracker (<em>Booked &rarr; Dispatched &rarr; In Transit &rarr;
+              Out for Delivery &rarr; Delivered</em>), slot reservation calendar, and automated route distance
+            calculation.</li>
         </ul>
       </div>
 
@@ -519,8 +570,10 @@
         </div>
         <div class="proj-tech">Node.js, Express.js, JWT, Bcrypt, Leaflet.js, REST APIs</div>
         <ul class="bullets">
-          <li>Built 4-step itinerary engine with dynamic REST API <code>/api/ai/generate</code> generating day-wise customized schedules.</li>
-          <li>Implemented secure token authentication, encrypted credentials, cloud sync, and interactive drag-and-drop itinerary studio.</li>
+          <li>Built 4-step itinerary engine with dynamic REST API <code>/api/ai/generate</code> generating day-wise
+            customized schedules.</li>
+          <li>Implemented secure token authentication, encrypted credentials, cloud sync, and interactive drag-and-drop
+            itinerary studio.</li>
         </ul>
       </div>
 
@@ -534,8 +587,10 @@
         </div>
         <div class="proj-tech">Python, TCP Sockets, Threading, AES Cryptography (Fernet), SQLite</div>
         <ul class="bullets">
-          <li>Constructed low-level TCP client-server chat server with custom length-prefix message framing and non-blocking sockets.</li>
-          <li>Integrated client-side AES symmetric encryption ensuring zero plaintext storage or relay on central host.</li>
+          <li>Constructed low-level TCP client-server chat server with custom length-prefix message framing and
+            non-blocking sockets.</li>
+          <li>Integrated client-side AES symmetric encryption ensuring zero plaintext storage or relay on central host.
+          </li>
         </ul>
       </div>
     </section>
@@ -544,9 +599,11 @@
     <section class="section">
       <h2 class="section-title">Research &amp; Publications</h2>
       <div class="ach-item">
-        <strong>&ldquo;Revolutionizing Intelligent Food Packaging: Nanomaterials, AI-ML, and Their Seamless Integration&rdquo;</strong><br />
-        Published in <strong>Food Reviews International (Taylor &amp; Francis)</strong> &bull; Vol. 42, No. 6 &bull; 
-        <a href="https://www.tandfonline.com/doi/abs/10.1080/87559129.2026.2631781" target="_blank" rel="noopener" class="doi-btn">
+        <strong>&ldquo;Revolutionizing Intelligent Food Packaging: Nanomaterials, AI-ML, and Their Seamless
+          Integration&rdquo;</strong><br />
+        Published in <strong>Food Reviews International (Taylor &amp; Francis)</strong> &bull; Vol. 42, No. 6 &bull;
+        <a href="https://www.tandfonline.com/doi/abs/10.1080/87559129.2026.2631781" target="_blank" rel="noopener"
+          class="doi-btn">
           DOI: 10.1080/87559129.2026.2631781 &nearr;
         </a>
       </div>
@@ -556,10 +613,15 @@
     <section class="section">
       <h2 class="section-title">Achievements &amp; Certifications</h2>
       <ul class="bullets">
-        <li><strong>400+ LeetCode DSA Problems:</strong> Solved 400+ problems in C++ covering Binary Search, DP, Graphs, and Backtracking (<a href="https://leetcode.com/u/Kumkumrathee_12/" target="_blank" rel="noopener">Profile &nearr;</a>).</li>
-        <li><strong>Smart India Hackathon (SIH):</strong> Qualified BPIT internal round with <em>MineGov AI</em> for Ministry of Coal / Coal India.</li>
-        <li><strong>NPTEL IIT Kharagpur – Machine Learning:</strong> <em>Elite + Silver</em> Certification with <strong>83% consolidated score</strong>.</li>
-        <li><strong>Generative AI Studio:</strong> Certified in prompt engineering, embeddings, and foundational LLM integrations (2025).</li>
+        <li><strong>400+ LeetCode DSA Problems:</strong> Solved 400+ problems in C++ covering Binary Search, DP, Graphs,
+          and Backtracking (<a href="https://leetcode.com/u/Kumkumrathee_12/" target="_blank" rel="noopener">Profile
+            &nearr;</a>).</li>
+        <li><strong>Smart India Hackathon (SIH):</strong> Cleared BPIT internal college rounds in both 2nd and 3rd year
+          with <em>MineGov AI</em> for Ministry of Coal / Coal India (final round results awaited).</li>
+        <li><strong>NPTEL IIT Kharagpur – Machine Learning:</strong> <em>Elite + Silver</em> Certification with
+          <strong>83% consolidated score</strong>.</li>
+        <li><strong>Generative AI Studio:</strong> Certified in prompt engineering, embeddings, and foundational LLM
+          integrations (2025).</li>
         <li><strong>Web Development Internship:</strong> Completed frontend internship at IAmigos Foundation (IAF).</li>
       </ul>
     </section>
@@ -567,4 +629,5 @@
   </div>
 
 </body>
+
 </html>

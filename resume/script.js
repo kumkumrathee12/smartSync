@@ -57,9 +57,9 @@ sections.forEach(s => ioNav.observe(s));
   if (!el) return;
   const phrases = [
     'Full-Stack Web Applications.',
-    'Data Structures & Algorithms.',
+    'Data Structures & Algorithms in C++.',
     'AI & Machine Learning Solutions.',
-    'Real-Time Cloud Systems.'
+    'Robust RESTful APIs.'
   ];
   let pi = 0, ci = 0, deleting = false;
   function tick() {
